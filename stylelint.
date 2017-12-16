@@ -1,14 +1,13 @@
 {
   "extends": "stylelint-config-standard",
   "ignoreFiles": [
-        "static/src/realty/realty-filter.scss",
-        "static/src/styles/_map-normalize.scss",
-        "static/src/styles/_print.scss"
+        "src/styles/fonts.scss",
     ],
   "rules": {
     "rule-empty-line-before": "always",
     "number-leading-zero": "never",
     "selector-pseudo-element-colon-notation": "single",
+    "no-descending-specificity": null,
     "declaration-no-important": true,
     "block-opening-brace-newline-before": "always-single-line",
     "block-opening-brace-newline-after": "always",

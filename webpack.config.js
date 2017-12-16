@@ -21,7 +21,7 @@ module.exports = {
     },
     plugins: [
         new HtmlPlugin({
-            title: 'Main Homework',
+            title: 'Friend Filter',
             template: 'index.hbs',
             chunks: ['main']
         }),
