@@ -1,0 +1,94 @@
+.filter {
+  min-width: 620px;
+
+  &-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &-image {
+    display: block;
+    margin: 0 auto 20px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $orange;
+    padding: $inner-padding;
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+  }
+
+  &-close__icon {
+    height: 17px;
+    width: 17px;
+    fill: #fff;
+    transform: rotate(45deg);
+  }
+
+  &__fields {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $inner-padding;
+    background-color: $grey;
+  }
+
+  &-field {
+    width: 285px;
+    position: relative;
+  }
+
+  &-field__input {
+    display: block;
+    width: 100%;
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    padding: 5px 28px;
+    font-size: 14px;
+    color: $dark-grey;
+
+    &:focus + .filter-field__icon {
+      display: none;
+    }
+  }
+
+  &-field__icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    width: 14px;
+    height: 14px;
+    fill: $dark-grey;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  &__content {
+    background-color: #fff;
+    padding: $inner-padding $inner-padding 0;
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $grey;
+    padding: $inner-padding;
+    color: #fff;
+    border-radius: 0 0 10px 10px;
+  }
+
+  &-friends__list {
+    margin: 0;
+  }
+
+  &-friend {
+    margin: 0;
+  }
+}

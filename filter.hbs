@@ -1,0 +1,30 @@
+<div class="filter">
+    <header class="filter__header">
+        <div class="filter__title">Выберите друзей</div>
+        <div class="filter-close">
+            <svg class="filter-close__icon">
+                <use class="filter-close__cross" xlink:href="#cross" x="0" y="0" />
+            </svg>
+        </div>
+    </header>
+    <div class="filter__fields">
+        <div class="filter-field">
+            <input type="text" class="filter-field__input" placeholder="Введите имя друга">
+            <svg class="filter-field__icon">
+                <use class="filter-field__svg" xlink:href="#search" x="0" y="0" />
+            </svg>
+        </div>
+        <div class="filter-field">
+            <input type="text" class="filter-field__input" placeholder="Введите имя друга">
+            <svg class="filter-field__icon">
+                <use class="filter-field__svg" xlink:href="#search" x="0" y="0" />
+            </svg>
+        </div>
+    </div>
+    <div class="filter__content">
+        {{> "./filter-friend-list.hbs"}}
+    </div>
+    <div class="foote filter-footer">
+        <button class="filter__save"></button>
+    </div>
+</div>

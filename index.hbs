@@ -5,6 +5,13 @@
   <title>{{htmlWebpackPlugin.options.title}}</title>
 </head>
 <body>
-    <p>Hello world!</p>
+    <div class="filter-wrapper">
+        <img src="./src/images/logo.png" class="filter-image" alt="">
+        {{> "./filter.hbs"}}
+    </div>
+
+    <div class="svg-sprite" style="display: none">
+        {{> "./svg-sprite.hbs"}}
+    </div>
 </body>
 </html>
