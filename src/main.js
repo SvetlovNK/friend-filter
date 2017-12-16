@@ -2,4 +2,8 @@
 require('./styles/main.scss');
 
 // scripts
-require('./js/index');
+import filter from './js/index';
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    filter()
+});
