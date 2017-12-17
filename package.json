@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "watch": "webpack -w",
+    "start": "webpack -w",
+    "dev": "webpack & webpack-dev-server --content-base build/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "SvetlovNK",

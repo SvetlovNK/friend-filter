@@ -20,6 +20,7 @@ module.exports = {
         loaders
     },
     plugins: [
+        new CleanWebpackPlugin(['build']),
         new HtmlPlugin({
             title: 'Friend Filter',
             template: 'index.hbs',
@@ -29,7 +30,6 @@ module.exports = {
             filename: 'css/[name].css',
             allChunks: true,
         }),
-        new CleanWebpackPlugin(['build']),
         new styleLintPlugin({
             configFile: 'stylelint.',
             context: path.resolve(__dirname, 'src/'),
