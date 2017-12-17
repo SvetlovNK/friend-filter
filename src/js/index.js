@@ -1,4 +1,5 @@
 const Handlebars = require('handlebars/dist/handlebars');
+const templateElement = require('../../filter-friend.hbs');
 
 export default function () {
     const allFriends = document.querySelector('.js-common-friends');
@@ -37,17 +38,8 @@ export default function () {
         try {
             authUser();
 
-            // const friends = await callAPI('friends.get', { fields: 'city,country, photo_100' });
-            // const template = document.querySelector('#friend-template').textContent;
-            // const render = Handlebars.compile(template);
-            // const html = render(friends.items);
-
             const friends = await callAPI('friends.get', { fields: 'city,country, photo_100' });
-            const template = document.querySelector('#friend-template').textContent;
-            const render = Handlebars.compile(template);
-            const html = render(friends);
-
-            console.log(html);
+            const html = templateElement(friends);
 
             allFriends.innerHTML = html;
 

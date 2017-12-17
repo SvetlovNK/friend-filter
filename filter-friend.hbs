@@ -1,15 +1,13 @@
-<script id="friend-template" type="text/x-handlebars-template">
-    {{#each items}}
-        <li class="filter-friend">
-            <div class="filter-friend__ava">
-                <img class="filter-friend__image" src="{{photo_100}}" alt="">
-            </div>
-            <div class="filter-friend__name">{{first_name}} {{last_name}}</div>
-            <div class="filter-friend__button">
-                <svg class="filter-friend__button-icon">
-                    <use class="filter-friend__button-svg" xlink:href="#cross" x="0" y="0"/>
-                </svg>
-            </div>
-        </li>
-    {{/each}}
-</script>
+{{#each items}}
+    <li class="filter-friend">
+        <div class="filter-friend__ava">
+            <img class="filter-friend__image" src="{{photo_100}}" alt="">
+        </div>
+        <div class="filter-friend__name">{{first_name}} {{last_name}}</div>
+        <div class="filter-friend__button">
+            <svg class="filter-friend__button-icon">
+                <use class="filter-friend__button-svg" xlink:href="#cross" x="0" y="0"/>
+            </svg>
+        </div>
+    </li>
+{{/each}}
