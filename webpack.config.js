@@ -37,12 +37,17 @@ module.exports = {
             failOnError: false,
             quiet: false
         }),
-        new BrowserSyncPlugin({
-            host: 'localhost',
-            port: 8080,
-            server: { baseDir: ['build'] }
-            // proxy: 'http://127.0.0.1:8000/',
-            // open: false,
-        })
+        new BrowserSyncPlugin(
+            {
+                host: 'localhost',
+                port: 8080,
+                server: {baseDir: ['build']}
+                // proxy: 'http://127.0.0.1:8000/',
+                // open: false,
+            },
+            {
+                reload: false
+            }
+        )
     ]
 };

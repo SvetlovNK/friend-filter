@@ -1,7 +1,13 @@
 const templateElement = require('../../filter-friend.hbs');
 
 export default function () {
-    const allFriends = document.querySelector('.js-common-friends');
+    const friendClass = 'js-friend';
+    const friendListsClass = 'js-friends-list';
+
+    const filterContainer = document.querySelector('.js-filter');
+    const commonFriends = document.querySelector(`.${friendListsClass}[data-list="common"]`);
+    const favoriteFriens = document.querySelector(`.${friendListsClass}[data-list="favorites"]`);
+    const friendList = document.querySelectorAll(`.${friendListsClass}`);
 
     const filter = {
         allFriends: undefined,
@@ -15,6 +21,8 @@ export default function () {
                    console.error(e);
                }
             })();
+            this.dragAndDropFriends();
+
         },
         authentication: function () {
             return new Promise((resolve, reject) => {
@@ -46,7 +54,34 @@ export default function () {
         },
         renderFriends: function (friends) {
             const html = templateElement(friends);
-            allFriends.innerHTML = html;
+            commonFriends.innerHTML = html;
+        },
+        dragAndDropFriends: function() {
+            filterContainer.addEventListener('dragstart', this.dragFriend.bind(this));
+            filterContainer.addEventListener('dragend', this.dropFriend.bind(this));
+
+            for (let i = 0; i < friendList.length; i++) {
+                friendList[i].addEventListener('dragenter', this.handleOver);
+                friendList[i].addEventListener('dragleave', this.handleLeave);
+            }
+        },
+        dragFriend: (event) => {
+            let target = event.target;
+            if (!target.classList.contains(friendClass)) return false;
+
+            target.classList.add('drag');
+        },
+        dropFriend: (event) => {
+            let target = event.target;
+            if (!target.classList.contains(friendClass)) return false;
+
+            target.classList.remove('drag');
+        },
+        handleOver: function() {
+            this.classList.add('over');
+        },
+        handleLeave: function() {
+            this.classList.remove('over');
         }
     };
 
