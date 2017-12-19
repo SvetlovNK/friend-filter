@@ -185,3 +185,11 @@
     fill: $dark-grey;
   }
 }
+
+.filter__content.drag .filter-friend {
+  pointer-events: none;
+}
+
+.filter__content.drag .filter-friend.drag {
+  pointer-events: auto;
+}

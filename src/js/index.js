@@ -11,6 +11,7 @@ export default function () {
 
     const filter = {
         allFriends: undefined,
+        dragElement: undefined,
         init: function () {
             (async() => {
                try {
@@ -58,30 +59,54 @@ export default function () {
         },
         dragAndDropFriends: function() {
             filterContainer.addEventListener('dragstart', this.dragFriend.bind(this));
-            filterContainer.addEventListener('dragend', this.dropFriend.bind(this));
+            filterContainer.addEventListener('dragend', this.endDragFriend.bind(this));
+            filterContainer.addEventListener('drop', this.handleDrop.bind(this));
 
             for (let i = 0; i < friendList.length; i++) {
-                friendList[i].addEventListener('dragenter', this.handleOver);
+                friendList[i].addEventListener('dragenter', this.handleEnter);
+                friendList[i].addEventListener('dragover', this.handleOver);
                 friendList[i].addEventListener('dragleave', this.handleLeave);
             }
         },
-        dragFriend: (event) => {
+        dragFriend: function (event) {
             let target = event.target;
+            this.dragElement = target;
+
             if (!target.classList.contains(friendClass)) return false;
 
+            event.dataTransfer.effectAllowed = 'move';
+
+            filterContainer.classList.add('drag');
             target.classList.add('drag');
         },
-        dropFriend: (event) => {
+        endDragFriend: function (event) {
             let target = event.target;
             if (!target.classList.contains(friendClass)) return false;
 
+            filterContainer.classList.remove('drag');
             target.classList.remove('drag');
         },
-        handleOver: function() {
+        handleEnter: function(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+
             this.classList.add('over');
+        },
+        handleOver: function (event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+            return false;
         },
         handleLeave: function() {
             this.classList.remove('over');
+        },
+        handleDrop: function (event) {
+            let target = event.target;
+
+            target.appendChild(this.dragElement);
+            target.classList.remove('over');
+
+            this.dragElement = undefined;
         }
     };
 
