@@ -17,6 +17,7 @@ export default function () {
                try {
                    this.authentication();
                    this.allFriends = await this.getFriends('friends.get', { fields: 'city,country, photo_100' });
+                   console.log(this.allFriends);
                    this.renderFriends(this.allFriends);
                } catch (e) {
                    console.error(e);
@@ -88,12 +89,12 @@ export default function () {
         },
         handleEnter: function(event) {
             event.preventDefault();
-            event.dataTransfer.dropEffect = 'move';
 
             this.classList.add('over');
         },
         handleOver: function (event) {
             event.preventDefault();
+
             event.dataTransfer.dropEffect = 'move';
             return false;
         },
@@ -103,7 +104,7 @@ export default function () {
         handleDrop: function (event) {
             let target = event.target;
 
-            target.appendChild(this.dragElement);
+            target.insertBefore(this.dragElement, target.firstChild);
             target.classList.remove('over');
 
             this.dragElement = undefined;
