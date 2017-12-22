@@ -3,10 +3,11 @@ const templateElement = require('../../filter-friend.hbs');
 export default function () {
     const friendClass = 'js-friend';
     const friendListsClass = 'js-friends-list';
+    const friendButtonClass = 'js-friend-button';
 
     const filterContainer = document.querySelector('.js-filter');
     const commonFriends = document.querySelector(`.${friendListsClass}[data-list="common"]`);
-    const favoriteFriens = document.querySelector(`.${friendListsClass}[data-list="favorites"]`);
+    const favoriteFriends = document.querySelector(`.${friendListsClass}[data-list="favorites"]`);
     const friendList = document.querySelectorAll(`.${friendListsClass}`);
 
     const filter = {
@@ -17,13 +18,12 @@ export default function () {
                try {
                    this.authentication();
                    this.allFriends = await this.getFriends('friends.get', { fields: 'city,country, photo_100' });
-                   console.log(this.allFriends);
                    this.renderFriends(this.allFriends);
                } catch (e) {
                    console.error(e);
                }
             })();
-            this.dragAndDropFriends();
+            this.addListeners();
 
         },
         authentication: function () {
@@ -58,10 +58,11 @@ export default function () {
             const html = templateElement(friends);
             commonFriends.innerHTML = html;
         },
-        dragAndDropFriends: function() {
+        addListeners: function() {
             filterContainer.addEventListener('dragstart', this.dragFriend.bind(this));
             filterContainer.addEventListener('dragend', this.endDragFriend.bind(this));
             filterContainer.addEventListener('drop', this.handleDrop.bind(this));
+            filterContainer.addEventListener('click', this.switchFriend);
 
             for (let i = 0; i < friendList.length; i++) {
                 friendList[i].addEventListener('dragenter', this.handleEnter);
@@ -108,6 +109,19 @@ export default function () {
             target.classList.remove('over');
 
             this.dragElement = undefined;
+        },
+        switchFriend: (event) => {
+            let target = event.target;
+            let button = target.closest(`.${friendButtonClass}`);
+            let friend = target.closest(`.${friendClass}`);
+            let dataList = target.closest(`.${friendListsClass}`).getAttribute('data-list');
+            if (!button) return;
+
+            if (dataList === 'common') {
+                favoriteFriends.insertBefore(friend, favoriteFriends.firstChild);
+            } else {
+                commonFriends.insertBefore(friend, commonFriends.firstChild);
+            }
         }
     };
 
