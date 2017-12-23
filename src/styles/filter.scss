@@ -156,6 +156,10 @@
       background-color: $grey;
       opacity: .6;
     }
+
+    &.hide {
+      display: none;
+    }
   }
 
   &-friend__ava {

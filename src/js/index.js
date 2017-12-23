@@ -9,6 +9,7 @@ export default function () {
     const commonFriends = document.querySelector(`.${friendListsClass}[data-list="common"]`);
     const favoriteFriends = document.querySelector(`.${friendListsClass}[data-list="favorites"]`);
     const friendList = document.querySelectorAll(`.${friendListsClass}`);
+    const filterInputs = document.querySelectorAll(`.js-filter-input`);
 
     const filter = {
         allFriends: undefined,
@@ -64,11 +65,15 @@ export default function () {
             filterContainer.addEventListener('drop', this.handleDrop.bind(this));
             filterContainer.addEventListener('click', this.switchFriend);
 
-            for (let i = 0; i < friendList.length; i++) {
-                friendList[i].addEventListener('dragenter', this.handleEnter);
-                friendList[i].addEventListener('dragover', this.handleOver);
-                friendList[i].addEventListener('dragleave', this.handleLeave);
-            }
+            filterInputs.forEach(function (input) {
+                input.addEventListener('input', this.checkMatch.bind(this));
+            }.bind(this));
+
+            friendList.forEach(function (list) {
+                list.addEventListener('dragenter', this.handleEnter);
+                list.addEventListener('dragover', this.handleOver);
+                list.addEventListener('dragleave', this.handleLeave);
+            }.bind(this));
         },
         dragFriend: function (event) {
             let target = event.target;
@@ -97,6 +102,7 @@ export default function () {
             event.preventDefault();
 
             event.dataTransfer.dropEffect = 'move';
+
             return false;
         },
         handleLeave: function() {
@@ -107,6 +113,10 @@ export default function () {
 
             target.insertBefore(this.dragElement, target.firstChild);
             target.classList.remove('over');
+
+            filterInputs.forEach(function (input) {
+                this.checkMatch(undefined, input);
+            }.bind(this));
 
             this.dragElement = undefined;
         },
@@ -121,6 +131,42 @@ export default function () {
                 favoriteFriends.insertBefore(friend, favoriteFriends.firstChild);
             } else {
                 commonFriends.insertBefore(friend, commonFriends.firstChild);
+            }
+        },
+        checkMatch: function(event, element) {
+            let input = (event) ? event.target : element;
+            let value = input.value;
+            let inputData = input.getAttribute('data-input');
+            let list = document.querySelector(`.${friendListsClass}[data-list="${inputData}"]`);
+            let friends = list.querySelectorAll(`.${friendClass}`);
+
+            if (value) {
+                friends.forEach(function (friend) {
+                    let dataFriend = JSON.parse(friend.getAttribute('data-friend'));
+
+                    if(this.doMatch(dataFriend.name, value) || this.doMatch(dataFriend.lastName, value)) {
+                        console.log('Совпаление');
+                        friend.classList.remove('hide');
+                    } else {
+                        friend.classList.add('hide');
+                    }
+
+                }.bind(this));
+            } else {
+                friends.forEach(friend => friend.classList.remove('hide'));
+            }
+        },
+        doMatch: function (full, chunk) {
+            let str = full;
+            let regexp = new RegExp(chunk, 'i');
+            let result = str.match(regexp);
+
+            if (chunk.length === 0) return false;
+
+            if (result != null) {
+                return true;
+            } else {
+                return false
             }
         }
     };
