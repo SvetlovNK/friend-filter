@@ -1,5 +1,5 @@
 {{#each items}}
-    <li class="filter-friend js-friend" data-friend='{"name":"{{first_name}}", "lastName":"{{last_name}}"}'  draggable="true">
+    <li class="filter-friend js-friend" data-friend='{"name":"{{first_name}}", "lastName":"{{last_name}}"}' data-id="{{id}}" draggable="true">
         <div class="filter-friend__ava">
             <img class="filter-friend__image" src="{{photo_100}}" alt="">
         </div>
@@ -11,3 +11,4 @@
         </div>
     </li>
 {{/each}}
+

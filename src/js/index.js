@@ -7,9 +7,10 @@ export default function () {
 
     const filterContainer = document.querySelector('.js-filter');
     const commonFriends = document.querySelector(`.${friendListsClass}[data-list="common"]`);
-    const favoriteFriends = document.querySelector(`.${friendListsClass}[data-list="favorites"]`);
+    const favoriteFriends = document.querySelector(`.${friendListsClass}[data-list="favorite"]`);
     const friendList = document.querySelectorAll(`.${friendListsClass}`);
     const filterInputs = document.querySelectorAll(`.js-filter-input`);
+    const saveButton = document.querySelector('.js-save');
 
     const filter = {
         allFriends: undefined,
@@ -19,7 +20,13 @@ export default function () {
                try {
                    this.authentication();
                    this.allFriends = await this.getFriends('friends.get', { fields: 'city,country, photo_100' });
-                   this.renderFriends(this.allFriends);
+                   let storageFriends = window.localStorage.getItem('friends');
+                   if (storageFriends === null) {
+                       this.renderFriends(this.allFriends);
+                   } else {
+                       this.loadFriends(storageFriends);
+                   }
+
                } catch (e) {
                    console.error(e);
                }
@@ -64,6 +71,7 @@ export default function () {
             filterContainer.addEventListener('dragend', this.endDragFriend.bind(this));
             filterContainer.addEventListener('drop', this.handleDrop.bind(this));
             filterContainer.addEventListener('click', this.switchFriend);
+            saveButton.addEventListener('click', this.saveFriends);
 
             filterInputs.forEach(function (input) {
                 input.addEventListener('input', this.checkMatch.bind(this));
@@ -145,7 +153,6 @@ export default function () {
                     let dataFriend = JSON.parse(friend.getAttribute('data-friend'));
 
                     if(this.doMatch(dataFriend.name, value) || this.doMatch(dataFriend.lastName, value)) {
-                        console.log('Совпаление');
                         friend.classList.remove('hide');
                     } else {
                         friend.classList.add('hide');
@@ -168,6 +175,29 @@ export default function () {
             } else {
                 return false
             }
+        },
+        saveFriends: function () {
+            let saveList = {};
+            let friends = document.querySelectorAll(`.${friendClass}`);
+
+            friends.forEach(function (friend) {
+                let list = friend.closest(`.${friendListsClass}`);
+                let listName = list.dataset.list;
+                let id = friend.dataset.id;
+
+                if (!saveList.hasOwnProperty(listName)) {
+                    saveList[listName] = new Array();
+                    saveList[listName].push(id);
+                } else {
+                    saveList[listName].push(id);
+                }
+            });
+
+            let stringList = JSON.stringify(saveList);
+            window.localStorage.setItem('friends', stringList);
+        },
+        loadFriends: function (friendList) {
+            console.log(friendList);
         }
     };
 
