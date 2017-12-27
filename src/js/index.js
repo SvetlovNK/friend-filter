@@ -14,12 +14,14 @@ export default function () {
 
     const filter = {
         allFriends: undefined,
+        objectFriends: new Object(),
         dragElement: undefined,
         init: function () {
             (async() => {
                try {
                    this.authentication();
                    this.allFriends = await this.getFriends('friends.get', { fields: 'city,country, photo_100' });
+                   this.objectFriends = this.parseFriends(this.allFriends.items);
                    let storageFriends = window.localStorage.getItem('friends');
                    if (storageFriends === null) {
                        this.renderFriends(this.allFriends);
@@ -61,6 +63,13 @@ export default function () {
                     }
                 });
             })
+        },
+        parseFriends: function (friendList) {
+            let object = new Object();
+            friendList.forEach(function (friend) {
+                object[friend.id] = friend;
+            });
+            return object;
         },
         renderFriends: function (friends) {
             const html = templateElement(friends);
@@ -197,7 +206,27 @@ export default function () {
             window.localStorage.setItem('friends', stringList);
         },
         loadFriends: function (friendList) {
-            console.log(friendList);
+            let parseList = JSON.parse(friendList);
+            for (let key in parseList) {
+                let renderList = new Array();
+                let friends = this.objectFriends;
+
+                parseList[key].forEach(function (id) {
+                    if (friends.hasOwnProperty(id)) {
+                        renderList.push(friends[id]);
+                    }
+                });
+
+                const html = templateElement({
+                    items:renderList,
+                });
+
+                if (key === 'common') {
+                    commonFriends.innerHTML = html;
+                } else {
+                    favoriteFriends.innerHTML = html;
+                }
+            }
         }
     };
 
